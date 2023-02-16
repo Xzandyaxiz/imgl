@@ -7,15 +7,12 @@ import javax.imageio.ImageIO;
 
 public class DecodeImg {
 
-    public ArrayList<int[]> GetImageProportions(String path) {
+    public ArrayList<int[]> GetImageProportions(String path, int outputWidth, int outputHeight) {
         ArrayList<int[]> result = new ArrayList<int[]>();
 
         try {
             File inputFile = new File(path);
             BufferedImage inputImage = ImageIO.read(inputFile);
-
-            int outputWidth = 64;
-            int outputHeight = 64;
 
             double scaleX = (double) outputWidth / inputImage.getWidth();
             double scaleY = (double) outputHeight / inputImage.getHeight();
@@ -26,7 +23,11 @@ public class DecodeImg {
                     int sourceY = (int) (y / scaleY);
                     int rgb = inputImage.getRGB(sourceX, sourceY);
 
-                    int[] pixel = new int[]{ x, y, rgb & 0xFFFFFF };
+                    int red = (rgb >> 16) & 0xFF;
+                    int green = (rgb >> 8) & 0xFF;
+                    int blue = rgb & 0xFF;
+
+                    int[] pixel = new int[]{ x, y, red, green, blue };
                     result.add(pixel);
                 }
             }
