@@ -9,12 +9,12 @@ public class Plugin extends JavaPlugin
 
   	public void onEnable()
   	{
-    	LOGGER.info("\033[36mEnabled imgl\033[39m");
+    	LOGGER.info("\033[36mEnabled Imgl\033[39m");
 		getCommand("imgload").setExecutor(new ImgloadCmd());
   	}
 
   	public void onDisable()
   	{
-    	LOGGER.info("imgl disabled");
+    	LOGGER.info("\033[31mDisabling Imgl\033[39m");
   	}
 }
