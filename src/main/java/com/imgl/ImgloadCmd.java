@@ -69,10 +69,24 @@ public class ImgloadCmd implements CommandExecutor {
 
 
         for (int[] pixel : imageinfo) {
+            int x = pixel[0];
+            int y = pixel[1];
+            int red = pixel[2];
+            int green = pixel[3];
+            int blue = pixel[4];
+            
             LOGGER.info(String.format("(%d, %d, %d) at (%d, %d)", pixel[2], pixel[3], pixel[4], pixel[0], pixel[1]));
-
+            for (Map.Entry<Material, int[]> entry : colormaps.entrySet()) {
+                int[] rgbValues = entry.getValue();
+                double distance = Math.sqrt(Math.pow(rgbValues[0] - red, 2) + Math.pow(rgbValues[1] - green, 2) + Math.pow(rgbValues[2] - blue, 2));
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestBlock = entry.getKey();
+                }
+            }
+                 
             Block block = playerLocation.getWorld().getBlockAt(((int)playerLocation.getX() + pixel[0]), ((int)playerLocation.getY()-1), ((int)playerLocation.getZ() + pixel[1]));
-            block.setType(YELLOW_WOOL);
+            block.setType(closestBlock);
         }
 
         return true;
